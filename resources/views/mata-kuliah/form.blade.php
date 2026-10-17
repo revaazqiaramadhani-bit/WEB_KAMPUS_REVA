@@ -1,0 +1,14 @@
+@extends('layouts.app')
+
+@php($editing = $mataKuliah->exists)
+@section('title', $editing ? 'Ubah mata kuliah' : 'Tambah mata kuliah')
+@section('breadcrumb', 'Mata kuliah / '.($editing ? 'Ubah data' : 'Tambah data'))
+
+@section('content')
+    <div class="page-heading"><div><div class="eyebrow">Data akademik</div><h1 class="page-title">{{ $editing ? 'Ubah mata kuliah' : 'Tambah mata kuliah' }}</h1><p class="page-subtitle">Tentukan nama, jumlah SKS, semester, dan program studinya.</p></div></div>
+    @if ($prodi->isEmpty())<div class="alert alert-error">Buat program studi terlebih dahulu sebelum menambahkan mata kuliah. <a class="action-link" href="{{ route('prodi.create') }}">Tambah prodi →</a></div>@endif
+    <form class="panel form-panel" method="POST" action="{{ $editing ? route('mata-kuliah.update', $mataKuliah) : route('mata-kuliah.store') }}">@csrf @if ($editing) @method('PUT') @endif
+        <div class="form-grid"><label class="form-field"><span class="form-label">Kode mata kuliah *</span><input class="field" name="kode_mk" value="{{ old('kode_mk', $mataKuliah->kode_mk) }}" required maxlength="15" placeholder="Contoh: IF101">@error('kode_mk')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Nama mata kuliah *</span><input class="field" name="nama_mk" value="{{ old('nama_mk', $mataKuliah->nama_mk) }}" required placeholder="Contoh: Dasar Pemrograman">@error('nama_mk')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Program studi *</span><select class="select" name="prodi_id" required><option value="">Pilih program studi</option>@foreach ($prodi as $item)<option value="{{ $item->id }}" @selected(old('prodi_id', $mataKuliah->prodi_id) == $item->id)>{{ $item->nama_prodi }} · {{ $item->jenjang }}</option>@endforeach</select>@error('prodi_id')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Jumlah SKS *</span><input class="field" type="number" name="sks" min="1" max="6" value="{{ old('sks', $mataKuliah->sks) }}" required placeholder="3">@error('sks')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Semester *</span><input class="field" type="number" name="semester" min="1" max="14" value="{{ old('semester', $mataKuliah->semester) }}" required placeholder="1">@error('semester')<span class="form-error">{{ $message }}</span>@enderror</label></div>
+        <div class="form-actions"><a class="button button-light" href="{{ route('mata-kuliah.index') }}">Batal</a><button class="button button-primary" type="submit" @disabled($prodi->isEmpty())>{{ $editing ? 'Simpan perubahan' : 'Simpan mata kuliah' }}</button></div>
+    </form>
+@endsection

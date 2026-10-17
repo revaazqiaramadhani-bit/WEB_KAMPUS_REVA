@@ -1,0 +1,53 @@
+:root {
+    color: #40323a;
+    background: #fcf7f9;
+    --ink: #40323a;
+    --muted: #887780;
+    --line: #eee3e8;
+    --green: #bb6d88;
+    --green-dark: #914660;
+    --mint: #f8e8ed;
+    --wash: #fcf7f9;
+    --shadow: 0 12px 36px #573b480b;
+}
+
+.nav-label {
+    color: #a08f96;
+}
+
+.nav-link {
+    color: #766970;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #f8e8ed;
+    color: #914660;
+}
+
+.avatar {
+    background: #f8e8ed;
+    color: #914660;
+}
+
+.student-avatar {
+    background: #f8e8ed;
+    color: #914660;
+}
+
+.badge {
+    background: #f8e8ed;
+    color: #914660;
+}
+
+.alert-success {
+    background: #f8e8ed;
+    color: #754054;
+}
+
+.field:focus,
+.select:focus,
+.textarea:focus {
+    border-color: #c67f98;
+    box-shadow: 0 0 0 3px #f8e5eb;
+}

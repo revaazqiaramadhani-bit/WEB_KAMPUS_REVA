@@ -1,0 +1,13 @@
+@extends('layouts.app')
+
+@section('title', $mahasiswa->nama)
+@section('breadcrumb', 'Mahasiswa / Detail')
+
+@section('content')
+    <div class="page-heading"><div><div class="eyebrow">Profil mahasiswa</div><h1 class="page-title">{{ $mahasiswa->nama }}</h1><p class="page-subtitle">Informasi mahasiswa dan program studi yang diambil.</p></div><div class="action-row"><a class="button button-light" href="{{ route('mahasiswa.index') }}">← Kembali</a><a class="button button-primary" href="{{ route('mahasiswa.edit', $mahasiswa) }}">Ubah data</a></div></div>
+    <div class="detail-grid">
+        <section class="panel detail-panel"><h2 class="detail-title">Informasi mahasiswa</h2>@if ($mahasiswa->foto)<img class="photo-large" src="{{ asset('storage/'.$mahasiswa->foto) }}" alt="Foto {{ $mahasiswa->nama }}">@else<span class="photo-large photo-placeholder">{{ strtoupper(substr($mahasiswa->nama, 0, 1)) }}</span>@endif<div class="detail-list"><span class="detail-key">Nama lengkap</span><span class="detail-value">{{ $mahasiswa->nama }}</span><span class="detail-key">NIM</span><span class="detail-value">{{ $mahasiswa->nim }}</span><span class="detail-key">Jenis kelamin</span><span class="detail-value">{{ $mahasiswa->jenis_kelamin }}</span><span class="detail-key">Angkatan</span><span class="detail-value">{{ $mahasiswa->angkatan }}</span><span class="detail-key">Email</span><span class="detail-value">{{ $mahasiswa->email ?: 'Belum diisi' }}</span><span class="detail-key">Alamat</span><span class="detail-value">{{ $mahasiswa->alamat ?: 'Belum diisi' }}</span></div></section>
+        <section class="panel detail-panel"><h2 class="detail-title">Program studi yang diambil</h2>@if ($mahasiswa->prodi)<div class="detail-list"><span class="detail-key">Nama prodi</span><span class="detail-value">{{ $mahasiswa->prodi->nama_prodi }}</span><span class="detail-key">Kode prodi</span><span class="detail-value">{{ $mahasiswa->prodi->kode_prodi }}</span><span class="detail-key">Jenjang</span><span class="detail-value"><span class="badge">{{ $mahasiswa->prodi->jenjang }}</span></span><span class="detail-key">Akreditasi prodi</span><span class="detail-value">{{ $mahasiswa->prodi->akreditasi ?: 'Belum diisi' }}</span></div><p class="form-hint" style="margin-top:20px">Akreditasi mengikuti program studi mahasiswa.</p>@else<div class="empty-state">Prodi belum dipilih. Mahasiswa ini tetap tersimpan.</div>@endif</section>
+    </div>
+    <form style="margin-top:16px" method="POST" action="{{ route('mahasiswa.destroy', $mahasiswa) }}" onsubmit="return confirm('Yakin ingin menghapus data mahasiswa ini?')">@csrf @method('DELETE')<button class="button button-danger" type="submit">Hapus mahasiswa</button></form>
+@endsection

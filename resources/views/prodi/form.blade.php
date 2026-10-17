@@ -1,0 +1,13 @@
+@extends('layouts.app')
+
+@php($editing = $prodi->exists)
+@section('title', $editing ? 'Ubah prodi' : 'Tambah prodi')
+@section('breadcrumb', 'Program studi / '.($editing ? 'Ubah data' : 'Tambah data'))
+
+@section('content')
+    <div class="page-heading"><div><div class="eyebrow">Data akademik</div><h1 class="page-title">{{ $editing ? 'Ubah program studi' : 'Tambah program studi' }}</h1><p class="page-subtitle">Program studi dapat memiliki banyak mahasiswa dan mata kuliah.</p></div></div>
+    <form class="panel form-panel" method="POST" enctype="multipart/form-data" action="{{ $editing ? route('prodi.update', $prodi) : route('prodi.store') }}">@csrf @if ($editing) @method('PUT') @endif
+        <div class="form-grid"><label class="form-field"><span class="form-label">Kode prodi *</span><input class="field" name="kode_prodi" value="{{ old('kode_prodi', $prodi->kode_prodi) }}" required maxlength="15" placeholder="Contoh: IF">@error('kode_prodi')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Nama program studi *</span><input class="field" name="nama_prodi" value="{{ old('nama_prodi', $prodi->nama_prodi) }}" required placeholder="Contoh: Informatika">@error('nama_prodi')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Jenjang *</span><select class="select" name="jenjang" required><option value="">Pilih jenjang</option>@foreach (['D3', 'D4', 'S1', 'S2', 'S3'] as $jenjang)<option value="{{ $jenjang }}" @selected(old('jenjang', $prodi->jenjang) === $jenjang)>{{ $jenjang }}</option>@endforeach</select>@error('jenjang')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Akreditasi</span><input class="field" name="akreditasi" value="{{ old('akreditasi', $prodi->akreditasi) }}" maxlength="30" placeholder="Contoh: Unggul">@error('akreditasi')<span class="form-error">{{ $message }}</span>@enderror</label><label class="form-field"><span class="form-label">Foto prodi</span><input class="field" type="file" name="foto" accept="image/*">@if ($prodi->foto)<img class="photo-preview" src="{{ asset('storage/'.$prodi->foto) }}" alt="Foto {{ $prodi->nama_prodi }}">@endif<span class="form-hint">JPG, PNG, atau WEBP. Maksimal 2 MB.</span>@error('foto')<span class="form-error">{{ $message }}</span>@enderror</label></div>
+        <div class="form-actions"><a class="button button-light" href="{{ route('prodi.index') }}">Batal</a><button class="button button-primary" type="submit">{{ $editing ? 'Simpan perubahan' : 'Simpan prodi' }}</button></div>
+    </form>
+@endsection
